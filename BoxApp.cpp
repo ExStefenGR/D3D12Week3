@@ -396,13 +396,13 @@ void BoxApp::BuildBoxGeometry()
 		3, 6, 7,
 
 		// top face
-		6, 8, 5,
-		8, 1, 5,
+		6, 8, 5, //top triangle
+		8, 1, 5, //left triangle
 
-        2,8,6,
+        2,8,6, //right triangle
         8,6,2,
 
-        1,8,2,
+        1,8,2, //bottom triangle
         8,2,1, //TODO - explain this
 
 		// bottom face
