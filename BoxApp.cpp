@@ -45,6 +45,10 @@ private:
 	virtual void OnMouseDown(WPARAM btnState, int x, int y)override;
 	virtual void OnMouseUp(WPARAM btnState, int x, int y)override;
 	virtual void OnMouseMove(WPARAM btnState, int x, int y)override;
+	virtual void RotateLeft()override;
+	virtual void RotateRight()override;
+	virtual void MoveInward()override;
+	virtual void MoveOutward()override;
 
 	void BuildDescriptorHeaps();
 	void BuildConstantBuffers();
@@ -76,6 +80,10 @@ private:
 	float mTheta = 1.5f * XM_PI;
 	float mPhi = XM_PIDIV4;
 	float mRadius = 5.0f;
+	float m_rotate = 0.0f; //value for rotation
+	float m_angle = 0.01f; //Used to increment rotation by holding
+	float m_translateZ = 0.0f; //Value for translation
+	float m_speed = 0.01f;
 
 	POINT mLastMousePos;
 };
@@ -162,8 +170,13 @@ void BoxApp::Update(const GameTimer& gt)
 	XMMATRIX view = XMMatrixLookAtLH(pos, target, up);
 	XMStoreFloat4x4(&mView, view);
 
-	XMMATRIX world = XMLoadFloat4x4(&mWorld);
+	
+	XMMATRIX world = XMLoadFloat4x4(&mWorld);;
 	XMMATRIX proj = XMLoadFloat4x4(&mProj);
+	XMMATRIX mRotate = XMMatrixRotationZ(m_rotate); //Rotation
+	XMMATRIX mTranslateZ = XMMatrixTranslation(0.0f,0.0f,m_translateZ);
+	world *= mRotate;
+	world *= mTranslateZ;
 	XMMATRIX worldViewProj = world * view * proj;
 
 	// Update the constant buffer with the latest worldViewProj matrix.
@@ -275,6 +288,26 @@ void BoxApp::OnMouseMove(WPARAM btnState, int x, int y)
 
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;
+}
+
+void BoxApp::RotateLeft()
+{		
+	m_rotate += m_angle;
+}
+
+void BoxApp::RotateRight()
+{
+	m_rotate -= m_angle;
+}
+
+void BoxApp::MoveInward()
+{
+	m_translateZ += m_speed;
+}
+
+void BoxApp::MoveOutward()
+{
+	m_translateZ -= m_speed;
 }
 
 void BoxApp::BuildDescriptorHeaps()

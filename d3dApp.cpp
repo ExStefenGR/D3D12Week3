@@ -347,14 +347,23 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
     case WM_KEYUP:
-        if(wParam == VK_ESCAPE)
-        {
-            PostQuitMessage(0);
-        }
-        else if((int)wParam == VK_F2)
-            Set4xMsaaState(!m4xMsaaState);
-
+		if (wParam == VK_ESCAPE)
+		{
+			PostQuitMessage(0);
+		}
+		else if ((int)wParam == VK_F2)
+			Set4xMsaaState(!m4xMsaaState);
         return 0;
+	case WM_KEYDOWN:
+		if ((int)wParam == VK_LEFT)
+			RotateLeft();
+		else if ((int)wParam == VK_RIGHT)
+			RotateRight();
+		else if ((int)wParam == VK_UP)
+			MoveInward();
+		else if ((int)wParam == VK_DOWN)
+			MoveOutward();
+		return 0;
 	}
 
 	return DefWindowProc(hwnd, msg, wParam, lParam);
