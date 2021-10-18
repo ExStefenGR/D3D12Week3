@@ -80,10 +80,11 @@ private:
 	float mTheta = 1.5f * XM_PI;
 	float mPhi = XM_PIDIV4;
 	float mRadius = 5.0f;
+
 	float m_rotate = 0.0f; //value for rotation
 	float m_angle = 0.01f; //Used to increment rotation by holding
+	float m_speed = 0.01f; //used for increment of Translation
 	float m_translateZ = 0.0f; //Value for translation
-	float m_speed = 0.01f;
 
 	POINT mLastMousePos;
 };
